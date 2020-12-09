@@ -92,6 +92,6 @@ def solve_day4():
     print("Day 4", end=' ')
     print(len(passports), end=" ")
     passports = [p for p in passports if p.is_really_valid()]
-    print(len(passports))
+    print(len(passports), end=' ')
 
 

@@ -43,6 +43,6 @@ def solve_day1():
     print(a * b, end=' ')
 
     a, b, c = sum3(data, 2020)
-    print(a * b * c)
+    print(a * b * c, end=' ')
 
 

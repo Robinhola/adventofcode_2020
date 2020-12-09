@@ -52,6 +52,6 @@ def solve_day5():
     for r in range(1, 126):
         if sums[r] == 7 and sums[r - 1] == sums[r + 1] == 8:
             c = seats[r].index(0)
-            print(seat_id(r, c))
+            print(seat_id(r, c), end=' ')
             break
 

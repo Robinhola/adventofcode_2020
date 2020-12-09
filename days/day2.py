@@ -55,5 +55,5 @@ def solve_day2():
     count = 0
     for d in parse_data(data):
         count += 1 if d.assert_correctness_2() else 0
-    print(count)
+    print(count, end=' ')
 

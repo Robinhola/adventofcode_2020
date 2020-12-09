@@ -56,6 +56,5 @@ def backtrack_find_corrupted_line(commands) -> int:
 def solve_day8():
     commands = [parse_command(x) for x in data.data]
     print("Day 8", end=" ")
-
     print(execute_commands(commands), end=" ")
-    print(backtrack_find_corrupted_line(commands))
+    print(backtrack_find_corrupted_line(commands), end=' ')

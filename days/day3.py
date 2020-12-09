@@ -35,6 +35,6 @@ def solve_day3():
     product = 1
     for x in numbers_of_trees:
         product *= x
-    print(product)
+    print(product, end=' ')
 
 

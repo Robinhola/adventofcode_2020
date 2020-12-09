@@ -29,4 +29,4 @@ def questions_everybody_answered_yes(raw: str) -> int:
 def solve_day6():
     print("Day 6", end=' ')
     print(sum_cardinals(data), end=' ')
-    print(questions_everybody_answered_yes(data))
+    print(questions_everybody_answered_yes(data), end=' ')

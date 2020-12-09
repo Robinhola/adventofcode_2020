@@ -11,13 +11,24 @@ from days.day4 import solve_day4
 from days.day5 import solve_day5
 from days.day6 import solve_day6
 from days.day7 import solve_day7
+from days.day8 import solve_day8
+from days.day9 import solve_day9
 
+import time 
+
+def solve(fn):
+    start = time.time_ns()
+    fn()
+    end = time.time_ns()
+    print(f"in {(end - start)/1_000_000}ms")
 
 if __name__ == "__main__":
-    solve_day1()
-    solve_day2()
-    solve_day3()
-    solve_day4()
-    solve_day5()
-    solve_day6()
-    solve_day7()
+    solve(solve_day1)
+    solve(solve_day2)
+    solve(solve_day3)
+    solve(solve_day4)
+    solve(solve_day5)
+    solve(solve_day6)
+    solve(solve_day7)
+    solve(solve_day8)
+    solve(solve_day9)

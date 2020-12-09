@@ -77,4 +77,4 @@ def solve_day7():
     print(len(can_contain_my_bag), end=" ")
 
     contain = build_contain(rules)
-    print(how_many_bags("shiny gold", contain))
+    print(how_many_bags("shiny gold", contain), end=' ')

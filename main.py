@@ -15,6 +15,7 @@ from days.day8 import solve_day8
 from days.day9 import solve_day9
 from days.day10 import solve_day10
 from days.day11 import solve_day11
+from days.day12 import solve_day12
 
 import time 
 
@@ -36,3 +37,4 @@ if __name__ == "__main__":
     solve(solve_day9)
     solve(solve_day10)
     solve(solve_day11)
+    solve(solve_day12)

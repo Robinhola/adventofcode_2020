@@ -1,6 +1,8 @@
 import enum
 import dataclasses
 
+import data.day12_data as d
+
 
 class Direction(enum.Enum):
     North = "N"
@@ -52,6 +54,13 @@ def analyse_direction(direction: Direction):
     return Axis.No_axis, positive
 
 
+def identify_direction(facing: Direction, value: int, is_positive: bool) -> Direction:
+    rotation = positive_rotation if is_positive else negative_rotation
+    start = rotation.index(facing)
+    offset = value // 90
+    return rotation[(start + offset) % len(rotation)]
+
+
 class Boat:
     def __init__(self):
         self.facing = Direction.East
@@ -74,51 +83,50 @@ class Boat:
             self.longitude += positive * order.value
 
         if axis == Axis.No_axis:
-            rotation = positive_rotation if positive > 0 else negative_rotation
-            start = rotation.index(self.facing)
-            offset = order.value // 90
-            self.facing = rotation[(start + offset) % len(rotation)]
+            self.facing = identify_direction(self.facing, order.value, positive > 0)
 
     def advanced_move(self, order: Order):
         axis, positive = analyse_direction(order.direction)
 
-        if axis.Latitude:
+        if axis == Axis.Latitude:
             self.waypoint_latitude += positive * order.value
 
-        if axis.Longitude:
+        if axis == Axis.Longitude:
             self.waypoint_longitude += positive * order.value
 
         if axis == Axis.No_axis:
             if order.direction == Direction.Forward:
-                self.latitude += order.value * self.waypoint_latitude
+                self.latitude  += order.value * self.waypoint_latitude
                 self.longitude += order.value * self.waypoint_longitude
             else:
-                # TODO Fix -> make a truth table
-                rotation = positive_rotation if positive > 0 else negative_rotation
-                start = rotation.index(
-                    Direction.North if self.waypoint_latitude >= 0 else Direction.South
+                new_latitude_direction = identify_direction(
+                    Direction.North if self.waypoint_latitude >= 0 else Direction.South,
+                    order.value,
+                    positive > 0,
                 )
-                offset = order.value // 90
-                new_direction = rotation[(start + offset) % len(rotation)]
-                new_axis, new_positive = analyse_direction(new_direction)
-                if (
-                    new_axis == Axis.Latitude
-                    and self.waypoint_latitude * new_positive < 0
-                ):
-                    self.waypoint_latitude *= -1
-                    self.waypoint_longitude *= -1
-                if new_axis == Axis.Longitude:
-                    self.waypoint_longitude, self.waypoint_latitude = (
-                        positive * -1 * self.waypoint_latitude,
-                        positive * self.waypoint_longitude,
-                    )
+
+                new_longitude_direction = identify_direction(
+                    Direction.East if self.waypoint_longitude >= 0 else Direction.West,
+                    order.value,
+                    positive > 0,
+                )
+
+                old_latitude = self.waypoint_latitude
+                old_longitude = self.waypoint_longitude
+
+                if new_latitude_direction == Direction.North: self.waypoint_latitude =      abs(old_latitude)
+                if new_latitude_direction == Direction.South: self.waypoint_latitude = -1 * abs(old_latitude)
+                if new_latitude_direction == Direction.East: self.waypoint_longitude =      abs(old_latitude)
+                if new_latitude_direction == Direction.West: self.waypoint_longitude = -1 * abs(old_latitude)
+
+                if new_longitude_direction == Direction.North: self.waypoint_latitude =      abs(old_longitude)
+                if new_longitude_direction == Direction.South: self.waypoint_latitude = -1 * abs(old_longitude)
+                if new_longitude_direction == Direction.East: self.waypoint_longitude =      abs(old_longitude)
+                if new_longitude_direction == Direction.West: self.waypoint_longitude = -1 * abs(old_longitude)
 
     @property
     def manhattan_distance(self) -> int:
         return abs(self.latitude) + abs(self.longitude)
-
-
-import data.day12_data as d
 
 
 def solve_day12():
@@ -127,7 +135,7 @@ def solve_day12():
     boat = Boat()
     advanced_boat = Boat()
 
-    for line in d.sample_data:
+    for line in d.data:
         order = Order(Direction(line[0]), int(line[1:]))
         boat.move(order)
         advanced_boat.advanced_move(order)

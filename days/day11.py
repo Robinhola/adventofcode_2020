@@ -80,21 +80,15 @@ def count_occuped_seats_in_sight(grid: List[List[int]], x, y) -> int:
         count += 1 if v == 1 else 0
         return v != 2
 
-    # Left
-    for i in range(1, x + 1):
-        if update_count(grid[y][x - i]): break
+    # Left and right
+    for r in (range(x - 1, -1, -1), range(x + 1, len(grid[0]))):
+        for ix in r:
+            if update_count(grid[y][ix]): break
 
-    # Right
-    for i in range(x + 1, len(grid[0])):
-        if update_count(grid[y][i]): break
-
-    # Up 
-    for i in range(1, y + 1):
-        if update_count(grid[y - i][x]): break
-
-    # Down 
-    for i in range(y + 1, len(grid)):
-        if update_count(grid[i][x]): break
+    # Up and Down
+    for r in (range(y - 1, -1, -1), range(y + 1, len(grid))):
+        for iy in r:
+            if update_count(grid[iy][x]): break
 
     # Up Left
     i = 1
@@ -127,9 +121,7 @@ def create_in_sight_grid(grid) -> List[List[int]]:
     len_y = len(grid)
     len_x = len(grid[0])
 
-    neighbours = [None] * len_y
-    for y in range(len_y):
-        neighbours[y] = [0] * len_x
+    neighbours = [[0] * len_x for _ in range(len_y)]
 
     for y, x in itertools.product(range(len_y), range(len_x)):
         if grid[y][x] == 2: continue
@@ -149,10 +141,12 @@ def count_number_of_occupied_seats(data, neighbour_fn, tolerance) -> int:
 
 
 def solve_day11():
-    output = "Day 11 "
+    output = "Day 11 (unoptimized) "
 
-    output += str(count_number_of_occupied_seats(d.data, create_neighbour_grid, 4))
+    output += str(count_number_of_occupied_seats(d.sample_data, create_neighbour_grid, 4))
+    # output += str(count_number_of_occupied_seats(d.data, create_neighbour_grid, 4))
     output += " "
-    output += str(count_number_of_occupied_seats(d.data, create_in_sight_grid, 5))
+    output += str(count_number_of_occupied_seats(d.sample_data, create_in_sight_grid, 5))
+    # output += str(count_number_of_occupied_seats(d.data, create_in_sight_grid, 5))
 
     print(output, end=" ")
